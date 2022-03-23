@@ -1,88 +1,112 @@
-// CREATING A NEW ELEMENT
+let elFirstName = document.querySelector("#first-name");
+let elLastName = document.querySelector("#last-name");
+let elPhone = document.querySelector("#phone");
+let elRelation = document.querySelector("#relationship");
+let elForm = document.querySelector(".form-group");
+let elNameList = document.querySelector(".name-list");
+let elBtnGroup = document.querySelector(".btn-groups");
 
-const elFirstName = document.querySelector("#first-name");
-const elLastName = document.querySelector("#last-name");
-const elPhone = document.querySelector("#phone");
-const elRelation = document.querySelector("#relationship");
-const elForm = document.querySelector(".form-group");
-const elNameList = document.querySelector(".name-list");
+let elArr = [
+  {
+    firstName : "Aziz",
+    lastName : "Rakhim",
+    phone : "+998-95-011-36-33",
+    relation : "Friends"
+  }
+];
+ 
+let elNewList = [];
 
-const elContact = {};
+elArr.forEach((el) => {
+  elNewList = elArr.map((el) => {
+    return `
+      <li class="name-item col-6">
+        <div class="cover">
+          <p class="name-text">
+            ${el.firstName} ${el.lastName}
+          </p>
+          <p class="joint">
+            ${el.relation}
+          </p>
+          <a href="tel:+998950113633">
+            ${el.phone}
+          </a>
+        </div>
+      </li>
+    `;
+  })
 
+  elNameList.innerHTML = elNewList.join("");
+})
 
 elForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  
-  let oName = elContact.firstName = elFirstName.value;
-  let oLastName = elContact.lastName = elLastName.value;
-  let oPhone = elContact.phone = elPhone.value;
-  let oRelation = elContact.relation = elRelation.value;
-  
-  let elItem = document.createElement("li");
-  
-  elItem.className = "name-item col-6"
-  elItem.innerHTML = `
-    <div class="cover">
-    <p class="name-text">
-        ${oName} ${oLastName}
-    </p>
-    <p class="joint">
-        ${oRelation}
-    </p>
-    <a href="tel:+998950113633">
-        ${oPhone}
-    </a>
-    </div>`;
 
-  elNameList.appendChild(elItem);
+  let a = {
+    firstName : elFirstName.value,
+    lastName : elLastName.value,
+    phone : elPhone.value,
+    relation : elRelation.value
+  }
+
+  elArr.push(a);
+
+  elNewList = elArr.map((el) => {
+    return `
+      <li class="name-item col-6">
+        <div class="cover">
+          <p class="name-text">
+            ${el.firstName} ${el.lastName}
+          </p>
+          <p class="joint">
+            ${el.relation}
+          </p>
+          <a href="tel:+998950113633">
+            ${el.phone}
+          </a>
+        </div>
+      </li>
+    `;
+  })
+
+  elNameList.innerHTML = elNewList.join("");
 
   elFirstName.value = "";
   elLastName.value = "";
   elPhone.value = "";
+  elRelation.value = "";
+  
 });
 
-// FILTERING ELEMENTS
+elBtnGroup.addEventListener("click", (e) => {
+ 
+    let newestArr = elArr.filter((item) => {
+      return item.relation == e.target.textContent;
+    });
 
-const elAllBtn = document.querySelector("#allBtn");
-const elFamilyBtn = document.querySelector("#familyBtn");
-const elFriendBtn = document.querySelector("#friendBtn");
-const elColleagueBtn = document.querySelector("#colleagueBtn");
-
-elAllBtn.addEventListener("click", filterThings);
-elFamilyBtn.addEventListener("click", filterThings);
-elFriendBtn.addEventListener("click", filterThings);
-elColleagueBtn.addEventListener("click", filterThings);
-
-function filterThings(e) {
-
-  const elListItems = elNameList.childNodes;
-
-     for(let i = 0; i < elListItems.length; i++){
-      switch(e.target.innerText){
-        case "All" :
-          elListItems[i].className = "name-item col-6";
-          break;
-        case "Family" :
-          if(elContact.relation == "family"){
-            elListItems[i].className = "name-item col-6";
-          } else {
-            elListItems[i].className = "d-none";
-          }
-          break;
-        case "Friends" :
-          if(elContact.relation == "friend"){
-            elListItems[i].className = "name-item col-6";
-          } else {
-            elListItems[i].className = "d-none";
-          }
-          break;
-        case "Colleagues" :
-          if(elContact.relation == "colleague"){
-            elListItems[i].className = "name-item col-6";
-          } else {
-            elListItems[i].className = "d-none";
-          }
-          break;
-      }
+    if(e.target.textContent == "All"){
+      newestArr = elArr;
     }
-} 
+
+    let elNewListOne = newestArr.map((el) => {
+      return `
+        <li class="name-item col-6">
+          <div class="cover">
+            <p class="name-text">
+              ${el.firstName} ${el.lastName}
+            </p>
+            <p class="joint">
+              ${el.relation}
+            </p>
+            <a href="tel:+998950113633">
+              ${el.phone}
+            </a>
+          </div>
+        </li>
+      `;
+    });
+  
+    elNameList.innerHTML = elNewListOne.join("");
+
+});
+
